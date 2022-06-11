@@ -1,6 +1,9 @@
 package com.bridgelabz.addressbooksystem;
 
 public interface AddressBookIF {
-    public void addContact(ContactPerson person);
+
+    public void operation();
+    public void addContact();
     public void displayContents();
+    public void editPerson();
 }
