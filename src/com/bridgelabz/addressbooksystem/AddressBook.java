@@ -1,5 +1,6 @@
 package com.bridgelabz.addressbooksystem;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.HashMap;
 import java.util.Map;
@@ -16,6 +17,9 @@ public class AddressBook implements AddressBookIF {
     public static void setAddressBookName(String addressBookName) {
 
         AddressBook.addressBookName = addressBookName;
+    }
+    public ArrayList<ContactPerson> getContact() {
+        return new ArrayList<ContactPerson>(contactList.values());
     }
 
     @Override
