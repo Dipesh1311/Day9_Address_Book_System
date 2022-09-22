@@ -1,18 +1,21 @@
 package com.bridgelabz.addressbooksystem;
 
 import java.util.Scanner;
+import java.util.HashMap;
+import java.util.Map;
 public class AddressBook implements AddressBookIF {
-    private final int NUM_OF_PEOPLE = 5;
-    public static int numberOfEntries = 0;
-    public String addressBookName;
     Scanner scannerObject = new Scanner(System.in);
-    ContactPerson[]contactList = new ContactPerson[NUM_OF_PEOPLE];
+    Map<String, ContactPerson> contactList = new HashMap<String,ContactPerson>();
+    public static String addressBookName;
+    boolean isPresent = false;
 
     public String getAddressBookName() {
+
         return addressBookName;
     }
-    public void setAddressBookName(String addressBookName) {
-        this.addressBookName = addressBookName;
+    public static void setAddressBookName(String addressBookName) {
+
+        AddressBook.addressBookName = addressBookName;
     }
 
     @Override
@@ -39,35 +42,26 @@ public class AddressBook implements AddressBookIF {
                     break;
                 case 5:
                     moreChanges = false;
-                    System.out.println("BYE !");
-
+                    System.out.println("Exiting Address Book: \"+this.getAddressBookName()+\" !");
 
             }
-
         }while(moreChanges);
     }
-
     @Override
     public void addContact() {
-        System.out.println("Enter number of people you want to add to Addres book");
-        int numberOfPeople = scannerObject.nextInt();
-        int endIterator = numberOfPeople+numberOfEntries;
+        ContactPerson person = new ContactPerson();
+        Address address = new Address();
+        System.out.println("Enter First Name: ");
+        String firstName = scannerObject.next();
 
-        if(endIterator > NUM_OF_PEOPLE) {
-            System.out.println("Address Book is FULL !");
-            System.out.println("You can add: "+(NUM_OF_PEOPLE-numberOfEntries));
-            return;
-        }
-        else {
-
-            for(int index=numberOfEntries; index < endIterator ; index++) {
-
-                ContactPerson person = new ContactPerson();
-                Address address = new Address();
-                System.out.println("Enter the details of Person "+(index+1));
-
-                System.out.println("Enter First Name: ");
-                String firstName = scannerObject.next();
+        contactList.entrySet().stream().forEach(entry -> {
+            if(entry.getKey().equals(firstName.toLowerCase())) {
+                System.out.println("Contact Already Exists");
+                isPresent = true;
+                return;
+            }
+        });
+        if(isPresent == false) {
 
                 System.out.println("Enter Last Name: ");
                 String lastName = scannerObject.next();
@@ -96,26 +90,19 @@ public class AddressBook implements AddressBookIF {
                 address.setState(state);
                 address.setZip(zipCode);
                 person.setAddress(address);
-                contactList[index] = person;
-                numberOfEntries++;
+                contactList.put(firstName.toLowerCase(), person);
 
             }
         }
-
-
-    }
-
     public void editPerson() {
+        ContactPerson person = new ContactPerson();
 
         System.out.println("Enter the first name:");
         String firstName = scannerObject.next();
 
-        for(int index = 0; index <numberOfEntries; index++) {
+        if(contactList.containsKey(firstName)) {
 
-            ContactPerson person = contactList[index];
-
-            if(firstName.equals(person.getFirstName())) {
-
+                person = contactList.get(firstName);
                 Address address = person.getAddress();
                 System.out.println("\nChoose the attribute you want to change:");
                 System.out.println("1.Last Name\n2.Phone Number\n3.Email\n4.City\n5.State\n6.ZipCode");
@@ -155,48 +142,34 @@ public class AddressBook implements AddressBookIF {
                 }
 
             }
-
+        else {
+            System.out.println("Book Does Not Exist");
         }
     }
-
-
     @Override
     public void deletePerson() {
 
         System.out.println("Enter the first name of the person to be deleted");
         String firstName = scannerObject.next();
 
-        for(int index = 0; index <numberOfEntries; index++) {
-
-            ContactPerson person = contactList[index];
-
-            if(firstName.equals(person.getFirstName())) {
-
-                for(int nextIndex = index; nextIndex<contactList.length-1; nextIndex++) {
-                    contactList[nextIndex] = contactList[nextIndex+1];
-
-                }
-                numberOfEntries--;
-                return;
-            }
-
+        if(contactList.containsKey(firstName)) {
+            contactList.remove(firstName);
+            System.out.println("Successfully Deleted");
         }
-    }
+        else {
+            System.out.println("Contact Not Found!");
+        }
 
+    }
     @Override
     public void displayContents() {
-        System.out.println("----- Contents of the Address Book : "+addressBookName+" -----");
-        for(int index=0; index < numberOfEntries ; index++) {
-            System.out.println(contactList[index]);
 
+        System.out.println("----- Contents of the Address Book "+this.getAddressBookName()+" -----");
+        for (String eachContact : contactList.keySet()) {
+            ContactPerson person = contactList.get(eachContact);
+            System.out.println(person);
         }
         System.out.println("-----------------------------------------");
 
-    }
-
-
-    @Override
-    public String toString() {
-        return addressBookName;
     }
 }
