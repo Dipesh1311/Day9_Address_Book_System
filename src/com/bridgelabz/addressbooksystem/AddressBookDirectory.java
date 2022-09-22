@@ -5,11 +5,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
+
 public class AddressBookDirectory implements AddressBookDirectoryIF {
 
     public AddressBook addressBook;
     Scanner scannerObject = new Scanner(System.in);
-    Map<String,AddressBook> addressBookDirectory = new HashMap<>();
+    Map<String,AddressBook> addressBookDirectory = new HashMap<String,AddressBook>();
 
 
     public void operationDirectory() {
