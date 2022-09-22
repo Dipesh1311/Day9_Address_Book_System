@@ -12,4 +12,5 @@ public interface AddressBookDirectoryIF {
     void searchByCity();
     void searchByState();
     void displayPeopleByRegion(HashMap<String, ArrayList<ContactPerson>> listToDisplay);
+    void countPeopleByRegion(HashMap<String, ArrayList<ContactPerson>> listToDisplay);
 }
