@@ -1,9 +1,15 @@
 package com.bridgelabz.addressbooksystem;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 public interface AddressBookDirectoryIF {
 
-    public void addAddressBook();
-    public void operationDirectory();
-    public void displayDirectoryContents();
-    public void editAddressBook();
+    void addAddressBook();
+    void operationDirectory();
+    void displayDirectoryContents();
+    void editAddressBook();
+    void searchByCity();
+    void searchByState();
+    void displayPeopleByRegion(HashMap<String, ArrayList<ContactPerson>> listToDisplay);
 }
